@@ -1,1 +1,22 @@
+# Zero Trust Microsegmentation Policy
+version: 1.2
+effective_date: 2023-10-01
+rules:
+  - name: Medical Device Isolation
+    description: Segment patient-critical devices
+    source_zones: [clinical_network]
+    destination_zones: [mri_machines, infusion_pumps]
+    protocols: [DICOM, HL7]
+    action: allow_with_approval
+    approval_required: true
+    conditions: 
+      - time_window: "08:00-17:00"
+      - user_role: [biomed_engineer, radiologist]
 
+  - name: Block Legacy Protocols
+    description: Prevent unencrypted communications
+    source_zones: [any]
+    destination_zones: [any]
+    protocols: [SMBv1, Telnet, FTP]
+    action: block
+    log_severity: critical
