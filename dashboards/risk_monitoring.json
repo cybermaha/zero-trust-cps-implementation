@@ -1,1 +1,25 @@
-
+{
+  "dashboard": {
+    "title": "CPS Zero Trust Monitoring",
+    "panels": [
+      {
+        "title": "Policy Violations",
+        "type": "graph",
+        "datasource": "Splunk",
+        "query": "index=zt_logs policy_violation=* | timechart count by device_type"
+      },
+      {
+        "title": "Threat Intel Matches",
+        "type": "alertlist",
+        "datasource": "ThreatQ",
+        "thresholds": ["critical", "high"]
+      },
+      {
+        "title": "Compliance Status",
+        "type": "singlestat",
+        "datasource": "ServiceNow",
+        "metrics": ["IEC 62443: 92%", "NIST CSF: 87%"]
+      }
+    ]
+  }
+}
